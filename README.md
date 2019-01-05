@@ -1,2 +1,2 @@
 # PyChess
-A chess GUI in Python and an AI
+A chess GUI and AI in Python
