@@ -11,6 +11,7 @@ import math
 from pieces.nullPiece import nullPiece
 from board.board import Board
 from AI.AI import AI
+import copy
 
 pygame.init()
 size = width, height = 800, 800
@@ -114,22 +115,24 @@ while not quitGame:
     x=0
     y=0
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             quitGame = True
             pygame.quit()
             quit()
         if turn != player_color:
             while(turn!=player_color):
-                random_move_tup = gameAi.getBestMoveWithCapture(turn)
-                print("rand move",random_move_tup[0].position,random_move_tup[1])
-                coordinates_from = posToCoordinates(random_move_tup[0].position)
-                print("from",coordinates_from)
-                coordinates_to= posToCoordinates(random_move_tup[1])
-                print("to:",coordinates_to)
-                piece_string = random_move_tup[0].color[0].lower()+random_move_tup[0].toString()[0].lower()
-                square_color = chessBoard.squares[random_move_tup[0].position].color
-                to_square_color = chessBoard.squares[random_move_tup[1]].color
-                if chessBoard.squares[random_move_tup[1]].piece.toString() != "-" and chessBoard.squares[random_move_tup[1]].piece.color != random_move_tup[0].color:
+                best_move_tup = gameAi.minimax(chessBoard, 2, False, turn)
+                print(best_move_tup)
+                # print("rand move",best_move_tup[0].position,random_move_tup[1])
+                coordinates_from = posToCoordinates(best_move_tup[1].position)
+                # print("from",coordinates_from)
+                coordinates_to= posToCoordinates(best_move_tup[2])
+                # print("to:",coordinates_to)
+                piece_string = best_move_tup[1].color[0].lower()+best_move_tup[1].toString()[0].lower()
+                square_color = chessBoard.squares[best_move_tup[1].position].color
+                to_square_color = chessBoard.squares[best_move_tup[2]].color
+                if chessBoard.squares[best_move_tup[2]].piece.toString() != "-" and chessBoard.squares[best_move_tup[2]].piece.color != best_move_tup[1].color:
                     is_a_capture = True
                 else:
                     is_a_capture=False
